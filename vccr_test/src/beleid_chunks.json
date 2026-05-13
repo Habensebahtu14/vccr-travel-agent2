@@ -1,0 +1,174 @@
+{
+  "metadata": {
+    "bron": "Voorbeeld mobiliteitsbeleid",
+    "werkgever": "voorbeeld",
+    "versie": "1.0",
+    "datum_aangemaakt": "2026-05-05",
+    "toelichting": "Dit is het voorbeeld mobiliteitsbeleid. Voor elke werkgever (groep A, B, C) moet een eigen versie worden aangemaakt met hun specifieke beleid."
+  },
+  "labels": [
+    {
+      "label_id": "mobiliteitsbudget_overzicht",
+      "beschrijving": "Overzicht van mobiliteitsbudgetten: wie komt in aanmerking, welke budgetvormen bestaan er (OV+ en 100% EV), en bedragen per functieniveau",
+      "keywords": ["budget", "mobiliteitsbudget", "OV+ budget", "EV-budget", "functieniveau", "schaal", "categorie", "bedrag per maand", "geldbedrag", "hoeveel krijg ik"],
+      "chunk": "Mobiliteitsbudgetten zijn uitsluitend geldig voor medewerkers met wie dit in het arbeidscontract is overeengekomen of aan wie een budget voor een zakelijk auto wordt toegekend. Dit kan gelden voor:\n- Medewerkers die in dienst zijn gekomen na 1-7-2017, een functie hebben in schaal H3 of hoger en de keuze hebben gekregen uit een van de mobiliteitsbudgetten;\n- Medewerkers die in dienst waren vóór 1-7-2017 en die in plaats van een arbeidsvoorwaardelijke leaseauto (categorie B) hebben gekozen voor het OV+budget of het 100% EV-budget;\n- Of voor medewerkers die aantoonbaar >12.500 zakelijke kilometers rijden voor de uitvoering van hun functie.\n\nEr zijn twee budget vormen beschikbaar:\n1. Het OV+budget\n2. Het 100% EV budget\n\nDe keuzeopties zijn vastgelegd in de keuzekaart mobiliteit vanaf functieniveau H3. Jaarlijks wordt deze Keuzekaart geëvalueerd en waar nodig of mogelijk aangepast.\n\nOV+budget:\nHet OV+budget is een OV-Vrij abonnement 2e klasse, plus een maandelijks geldbedrag. Een 1e klasse upgrade is mogelijk tegen bijbetaling van €50,- per maand. Met het OV-Vrij abonnement reis je onbeperkt woon-werk, zakelijk en privé met het openbaar vervoer. De hoogte van het maandelijkse bedrag is afhankelijk van je functieniveau en de klasse van het OV-abonnement.\n\nBedragen per functieniveau:\n- E08/E09/TI10/TI11 (Cat. B1): OV+budget €525/mnd, 100% EV-budget €845/mnd\n- E10/H1/H2/TI12/TI13 (Cat. B2/Z): OV+budget €675/mnd, 100% EV-budget €1.035/mnd\n- H3/H4 (Cat. B3/Z3): OV+budget €825/mnd, 100% EV-budget €1.225/mnd\n- H5 en >H5 (Cat. B4): OV+budget €950/mnd, 100% EV-budget €1.375/mnd\n\nJe bent volledig vrij in je besteding van het budget. We gaan er wel vanuit dat je eventuele aanvullende vervoerskosten voor woon-werk en zakelijk verkeer voor eigen rekening neemt. Intercity Direct (toeslag) en incidenteel 1e klasse reizen zijn bij zakelijk verkeer wel toegestaan. Ook is het gebruik van het deelautoconcept toegestaan.\n\n100% EV-budget:\nHet 100% EV-budget is een maandelijks geldbedrag zonder OV-vrij abonnement, met als voorwaarde dat je door middel van een kentekenbewijs of private leasecontract kunt aantonen dat een volledig elektrische auto (100% EV) op jouw naam geregistreerd staat. De medewerker betaalt uit het 100% EV-budget alle reiskosten die in het kader van het dienstverband gemaakt worden. Reis je toch een keer met het OV dan is het declareren van een Intercity Direct (toeslag) en incidenteel 1e klasse reizen zijn bij zakelijk verkeer wel toegestaan.",
+      "voorbeeldvragen": [
+        "Hoeveel mobiliteitsbudget krijg ik?",
+        "Wat is het verschil tussen OV+ en EV-budget?",
+        "Welk budget past bij mijn functieniveau?",
+        "Ik ben schaal H3, hoeveel budget krijg ik?",
+        "Kan ik kiezen tussen OV+ en EV-budget?"
+      ]
+    },
+    {
+      "label_id": "fiscale_ruimte",
+      "beschrijving": "Hoe je de fiscale ruimte binnen je mobiliteitsbudget kunt benutten: belastingvrije kilometervergoeding, declareren via SAP Concur, rekenvoorbeelden",
+      "keywords": ["fiscaal", "belastingvrij", "kilometervergoeding", "0.21 per km", "netto", "bruto", "declareren", "SAP Concur", "fiscale ruimte", "rekenvoorbeeld", "uitbetaling"],
+      "chunk": "Mobiliteitsbudgetten: fiscale ruimte benutten\n\nDe fiscus biedt de werkgever ruimte om voor woon-werk en zakelijk verkeer een bedrag per kilometer belastingvrij te betalen. Door de Belastingdienst is dit vastgesteld op 0,21 euro per kilometer (2023). Deze fiscale ruimte willen we met het uitbetalen van de budgetten optimaal benutten.\n\nBenutten fiscale ruimte OV+budget:\nHeb je gekozen voor het OV+budget, dan wordt de OV kaart gezien als de vergoeding van de werkgever voor het woon-werkverkeer. Eventuele woon-werkkilometers die je met eigen vervoer vanuit het budget hebt gemaakt, kun je daarom niet belastingvrij te ontvangen. Maak je met eigen vervoer zakelijke kilometers dan kunnen we deze zakelijke kilometers wel belastingvrij uitbetalen tegen de bovengenoemde fiscale vrijstelling. Hiervoor houd je een zakelijke kilometerregistratie bij die je maandelijks door je leidinggevende laat accorderen en indient bij HR Services.\n\nBenutten fiscale ruimte 100% EV-budget:\nBinnen het 100% EV-budget is het mogelijk om de fiscaal vrije ruimte die de belastingdienst biedt zowel voor woon-werkverkeer als voor zakelijke kilometers te benutten.\n\nRekenformule woon-werkverkeer:\nwoon-werkafstand * 2 (heen- en terugreis) * 214 dagen (fiscaal kengetal) * 0,21 (per km) * (gemiddeld aantal dagen aanwezig op EW in een werkweek/5)\n\nVoorbeeld: 45 kilometer enkele reis * 2 keer per dag * 214 dagen per jaar (fiscaal kengetal) * 0,21 per kilometer * 2/5 geeft op jaarbasis €1617,60 die netto zijn ipv bruto (€134,80 per maand)\n\nJe declareert je kilometers via SAP Concur (Mijn HR), onder zakelijke kilometers, 'kilometervergoeding eigen auto'.",
+      "voorbeeldvragen": [
+        "Hoe declareer ik zakelijke kilometers?",
+        "Hoeveel krijg ik netto uitbetaald?",
+        "Wat is de kilometervergoeding?",
+        "Hoe werkt de fiscale ruimte?",
+        "Waar declareer ik mijn kilometers?"
+      ]
+    },
+    {
+      "label_id": "leaseauto_arbeidsvoorwaardelijk",
+      "beschrijving": "Arbeidsvoorwaardelijke leaseauto (categorie B): wie komt in aanmerking, keuzemogelijkheden na afloop leasecontract",
+      "keywords": ["leaseauto", "categorie B", "arbeidsvoorwaardelijk", "schaal H5", "lease", "elektrische auto", "keuzekaart", "leasecontract"],
+      "chunk": "Lease-auto (arbeidsvoorwaardelijke of zakelijke deelauto- en leaseauto)\n\nEen leaseauto kan op twee gronden worden verstrekt. We kennen:\n1. De arbeidsvoorwaardelijke leaseauto (categorie B);\n2. De zakelijke deelauto- en leaseauto (Categorie Z).\n\nDe arbeidsvoorwaardelijke leaseauto (categorie B):\n- Is onderdeel van je arbeidsovereenkomst;\n- Wordt toegekend in schaal H5 of hoger;\n- Of als aan jou een arbeidsvoorwaardelijke auto is toegekend vóór 1-7-2017 en dit in jouw contract is vastgelegd.\n\nVoor medewerkers met een arbeidsvoorwaardelijke leaseauto, toegekend vóór 1-7-2017 geldt dat zij na afloop van hun leasecontract de keuze hebben uit drie opties:\n1. het OV+ budget;\n2. het 100% EV-budget;\n3. of een elektrische leaseauto.\n\nDe arbeidsvoorwaardelijk keuzeopties zijn vastgelegd in de Keuzekaart Arbeidsvoorwaardelijke Lease. Jaarlijks wordt deze Keuzekaart geëvalueerd en waar nodig of mogelijk aangepast.\n\nOp de arbeidsvoorwaardelijke leaseauto is de leaseauto-regeling van toepassing.",
+      "voorbeeldvragen": [
+        "Kan ik een leaseauto krijgen?",
+        "Wat zijn mijn opties na afloop van mijn leasecontract?",
+        "Vanaf welke schaal krijg ik een leaseauto?",
+        "Wat is een categorie B leaseauto?"
+      ]
+    },
+    {
+      "label_id": "deelauto",
+      "beschrijving": "Zakelijke deelauto: wanneer gebruiken, hoe reserveren via LINK!, gebruiksregels",
+      "keywords": ["deelauto", "delen", "LINK!", "reserveren", "zakelijk vervoer", "wagenparkbeheerder", "gebruiksregels deelauto"],
+      "chunk": "De zakelijke deelauto (<12.500 zakelijk km)\n\nAls het niet aannemelijk is dat je >12.500 zakelijke km gaat rijden kun je voor je zakelijk vervoer gebruik maken van de deelauto of een van de andere zakelijke vervoersopties.\n\nOok wanneer je het OV+budget ontvangt mag je aanvullend gebruik maken van een deelauto. Een uitzondering is het 100% EV-budget. Je rijdt dan al elektrisch en wordt geacht vanuit het budget in je eigen mobiliteitsbehoefte te voorzien.\n\nHoe werkt het?\nDe zakelijke deelauto kan worden gereserveerd via LINK! of een wagenparkbeheerder van het betreffende bedrijfsonderdeel. De sleutel van de via LINK! te reserveren zakelijke deelauto kan worden opgehaald bij de wagenparkbeheerder van het betreffende bedrijfsonderdeel.\n\nGebruik deelauto's vooral wanneer je bestemming niet (goed) met het OV bereikbaar is.\n\nGebruiksregels:\n- Houd er rekening mee dat de auto na jou door een andere collega wordt gebruikt. Gebruik je gezonde verstand. Laat de auto schoon achter, laad de auto op, kom op tijd en haal je dit niet, laat dan weten dat je te laat komt, rook niet en vervoer geen spullen die voor (stank)overlast zorgen;\n- Ritregistratie vindt plaats onder de voorwaarden vermeld in de paragraaf Track & Trace;\n- Alle bekeuringen zijn voor rekening van de berijder;\n- Wordt de auto geflitst tijdens een moment dat de auto niet zakelijk onderweg is, dan kunnen er sancties volgen;\n- De auto mag niet oneigenlijk gebruikt worden voor bijvoorbeeld Uber- of Pop-diensten en er mag niks aan de auto worden verkocht of verhandeld worden.",
+      "voorbeeldvragen": [
+        "Hoe reserveer ik een deelauto?",
+        "Wanneer mag ik de deelauto gebruiken?",
+        "Wat zijn de regels voor de deelauto?",
+        "Ik heb een OV+budget, mag ik ook een deelauto gebruiken?"
+      ]
+    },
+    {
+      "label_id": "zakelijke_leaseauto",
+      "beschrijving": "Zakelijke leaseauto (categorie Z) voor medewerkers met >12.500 zakelijke km/jaar",
+      "keywords": ["zakelijke leaseauto", "categorie Z", "Z+", "Z3", "12500 km", "aanvraagformulier", "zakelijke auto", "poolauto", "intensief gebruik"],
+      "chunk": "De zakelijke lease auto klasse Z (>12.500 zakelijk km)\n\nAls het aannemelijk is dat je >12.500 zakelijke km gaat rijden of intensief en regelmatig ad hoc gebruik moet maken van een auto, dan kun je voor je zakelijk vervoer een zakelijke leaseauto aanvragen in klasse Z, Z+ of Z3. Maak hierbij gebruik van het aanvraagformulier zakelijke auto.\n\nJe kunt ook zelf een elektrische auto kopen of leasen vanuit het 100% EV budget. Maak dan gebruik van het aanvraagformulier '100% EV budget'.\n\nKlassen:\n- Categorie Z >12.500 zakelijke km op jaarbasis (excl. woon-werk) of kort intensief gebruik\n- Categorie Z+ > 20.000 zakelijke km op jaarbasis (excl. woon-werk)\n- Categorie Z3 >12.500 zakelijke km op jaarbasis (excl. woon-werk) in functieniveau H3 en H4\n\nKomt een medewerker nieuw in dienst dan kan de leidinggevende het budget of een zakelijke leaseauto aanvragen. De medewerker krijgt bij keuze voor een zakelijke leaseauto als eerste auto altijd een auto uit de pool.\n\nVoorwaarden:\n- De medewerker dient aantoonbaar te kunnen maken dat een zakelijke leaseauto inderdaad het meest passend is voor de functie (ritregistratie, agenda-informatie, schriftelijke onderbouwing door leidinggevende);\n- Privégebruik is in overleg met de leidinggevende toegestaan tegen het betalen van een fiscale bijtelling;\n- Bij ziekte/vakantie kan gevraagd worden om de auto binnen de deelautopool beschikbaar te stellen;\n- Blijkt er ruimte tot delen (ca. <12.500 km of weinig intensief gebruik) dan vervalt de reservering en kan de medewerker kiezen voor één van de woon-werkopties, aangevuld met de zakelijke deelauto.",
+      "voorbeeldvragen": [
+        "Ik rij veel zakelijke kilometers, kan ik een leaseauto aanvragen?",
+        "Wat is het verschil tussen Z en Z+?",
+        "Mag ik privé rijden met mijn zakelijke leaseauto?",
+        "Hoe vraag ik een zakelijke leaseauto aan?"
+      ]
+    },
+    {
+      "label_id": "bedrijfswagen_rittenadministratie",
+      "beschrijving": "Bedrijfswagen gebruik, zakelijk vs privé ritten, rittenadministratie, Winterswijkverklaring, archivering",
+      "keywords": ["bedrijfswagen", "rittenadministratie", "databox", "privé", "zakelijk", "Winterswijkverklaring", "500 km", "bijtelling", "ritregistratie", "kilometerstand"],
+      "chunk": "Bedrijfswagen\n\nEen bedrijfswagen is een bus of combo, voorzien van logo, die wordt ingezet voor de uitvoering van het dagelijks werk en die is uitgerust met gereedschap of met laadruimte voor het vervoeren van materialen.\n\nZakelijk gebruik van de bedrijfswagen:\nMet de bedrijfswagen mogen uitsluitend zakelijke kilometers worden gemaakt. Op grond van de Wet op de Loonbelasting dienen wij als werkgever tussen de 4% en 25% van de cataloguswaarde van de bedrijfswagen jaarlijks bij jouw inkomen op te tellen en daarover maandelijks loonheffing bij je in te houden.\n\nVoorbeelden van zakelijk en privégebruik:\n- Woon-werkverkeer, inclusief omrijkilometers vanwege file of wegafsluiting, is zakelijk;\n- Omrijden tijdens woon-werkverkeer vanwege privéomstandigheden wordt aangemerkt als privé;\n- Alle kilometers gereden tijdens een wacht- en storingsdienst zijn zakelijk;\n- Het rijden met de bedrijfsauto tijdens ziekte- en vakantiedagen, inclusief het weekend, wordt als privé aangemerkt;\n- Ritten naar een bedrijfsuitje, etentje met de afdeling of zakelijke opleiding worden als zakelijk aangemerkt;\n- Op weg naar huis boodschappen doen, je kind ophalen, naar familie gaan etc. worden allen aangemerkt als privégebruik.\n\nAdministratief proces:\nJe moet aan bepaalde eisen van de Belastingdienst voldoen om een bijtelling te voorkomen. Je bent zelf verantwoordelijk voor het aanvragen van de Winterswijkverklaring (verklaring voor 'geen privégebruik'). In de Winterswijkverklaring staat dat je per kalenderjaar niet meer dan 500 kilometer privé met de auto rijdt.\n\nRittenadministratie:\nEen sluitende rittenadministratie bevat:\n- het merk, het type en het kenteken van de auto;\n- de periode waarin de auto beschikbaar is geweest;\n- de ritgegevens.\n\nPer rit moet je de volgende gegevens noteren:\n- de datum;\n- de begin- en eindkilometerstand;\n- het adres van vertrek en van aankomst;\n- de route als je niet de meest gebruikelijke route hebt gereden;\n- het karakter van de rit (privé of zakelijk);\n- de privé-omrijd-kilometers bij een rit met een gemengd karakter.\n\nArchivering: Als medewerker dien je je eigen rittenadministratie voor een periode van 7 jaar te bewaren.",
+      "voorbeeldvragen": [
+        "Wat moet ik registreren per rit?",
+        "Wat is de Winterswijkverklaring?",
+        "Hoe lang moet ik mijn rittenadministratie bewaren?",
+        "Telt woon-werkverkeer als zakelijk of privé?",
+        "Wat is zakelijk en wat is privé gebruik?"
+      ]
+    },
+    {
+      "label_id": "track_and_trace",
+      "beschrijving": "Track & Trace systeem (On-Route) voor zakelijke deelauto's: hoe het werkt, datasleutel, registratie",
+      "keywords": ["track and trace", "On-Route", "datasleutel", "volgsysteem", "registratie voertuig", "schademeldingen", "verkeersovertredingen"],
+      "chunk": "Track & Trace\n\nDe zakelijke deelauto's zijn uitgerust met een Track-and-Trace systeem. Dit is een voertuig volg- en ritregistratiedienst van On-Route.\n\nKenmerken:\n- Met deze dienst krijgt de werkgever onder andere een nauwkeurig inzicht in de gereden kilometers van haar voertuigen.\n- Dit systeem zet de rijbewegingen met de zakelijke deelauto's via een persoonlijke datasleutel in een datasysteem.\n- Deze data wordt via internet benaderd, uitlezing van het systeem door de berijder is daarom niet nodig.\n- Het systeem is opgesteld in samenwerking met de Belastingdienst, dit betekent dat bij het juist gebruik van dit systeem de informatie zonder veel administratieve rompslomp gebruikt kan worden voor de verplichting die de werkgever heeft richting de Belastingdienst.\n\nPer gereden rit dienen de volgende gegevens vastgelegd te zijn:\n- Naam berijder\n- Datum\n- Begin- en eind kilometer stand\n- Het adres van vertrek en van aankomst\n- De route als de berijder niet de meest gebruikelijke route heeft gereden\n- Het karakter van de rit (privé of zakelijk)\n\nHoe kies je voor Privé (P) of Zakelijk (Z)?\nJe kunt het zakelijk of privégebruik van het voertuig zelf aangeven, door de schakelaar van het Track-and-Trace systeem eenvoudig om te schakelen naar P of Z. Wanneer je P aangeeft, de route niet meer vastgelegd wordt. Enkel het aantal kilometers wordt door het systeem geregistreerd.",
+      "voorbeeldvragen": [
+        "Hoe werkt Track & Trace?",
+        "Wat wordt er geregistreerd in de databox?",
+        "Word ik gevolgd in de deelauto?",
+        "Hoe schakel ik tussen privé en zakelijk in de auto?"
+      ]
+    },
+    {
+      "label_id": "controle_sancties",
+      "beschrijving": "Controle door werkgever en Belastingdienst, sancties bij onjuist gebruik, boetes, bijtelling",
+      "keywords": ["controle", "sanctie", "boete", "bijtelling", "Belastingdienst", "terugwerkende kracht", "onjuist gebruik", "straf", "consequenties"],
+      "chunk": "Controle en sancties\n\nIndien uit controle door de Belastingdienst onomstotelijk komt vast te staan dat de rittenverantwoording onjuist- en/of niet conform de Wetgeving heeft plaatsgevonden en het geconstateerde aan jou te wijten is, dan zal er met terugwerkende kracht over het hele kalenderjaar worden bijgeteld.\n\nControle gebruik voertuigen:\nDe verantwoordelijke afdelingen kunnen controles uitvoeren op de voor de werkgever bijgehouden ritregistratie. Dit gaat volgens de richtlijnen van Track & Trace. Indien wij verkeersovertredingen ontvangen, checken wij of jij op het tijdstip inderdaad in de bedrijfsauto hebt gereden en houden we de boete in op je salaris.\n\nSancties:\nAls we als werkgever merken dat je toch privé rijdt terwijl je een Winterswijkverklaring hebt ingediend, zijn wij verplicht bijtelling door te voeren met terugwerkende kracht over het hele kalenderjaar en/of voorgaande jaren. Het kan ook voorkomen dat de fiscus een sanctie oplegt. Dit kan betekenen dat je met terugwerkende kracht één of meerdere jaren bijtelling krijgt. Je kan daarnaast ook nog een boete en rente opgelegd krijgen. Kopieën van de opgelegde sancties voegen wij toe aan je personeelsdossier.",
+      "voorbeeldvragen": [
+        "Wat gebeurt er als ik privé rij zonder dat te melden?",
+        "Kan ik een boete krijgen?",
+        "Wat zijn de sancties bij onjuist gebruik?",
+        "Worden verkeersovertredingen ingehouden op mijn salaris?"
+      ]
+    },
+    {
+      "label_id": "ov_vrij_reizen",
+      "beschrijving": "OV-vrij reizen kaart: woon-werk en zakelijk gebruik, 1e klas upgrade, aanvragen bij Forensz, beëindigingsregels",
+      "keywords": ["OV-vrij", "OV vrij reizen", "woon-werk", "gratis OV", "onbeperkt reizen", "2e klas", "eerste klas upgrade", "aanvragen", "opzeggen", "beëindigen", "ziekte", "verlof", "zwangerschap", "Forensz"],
+      "chunk": "Openbaar vervoer — OV-vrij reizen\n\n1. OV-vrij reizen voor woon-werkverkeer\n\nOV-vrij reizen:\nKies je voor woon-werkreizen met het OV, dan verstrekken we aan jou OV-vrij reizen kaart 2e klasse.\n- Je reist hiermee onbeperkt 24/7 met vrijwel alle soorten OV in Nederland.\n- Deze kaart mag je gebruiken voor al je reizen: privé, woon-werk en zakelijk.\n- Kosten voor toeslagen zoals Intercity Direct en eventueel aan je OV reis gerelateerde zaken zoals de fietsenstalling bij het station vergoeden we niet. Tenzij deze kosten zakelijk zijn gemaakt.\n- Een upgrade naar 1e klas reizen is op eigen kosten mogelijk (€50,- per maand).\n\nOV-vrij reizen voor zakelijk gebruik:\nHeb je voor jouw woon-werkverkeer een OV-vrij kaart dan gebruik je deze ook voor je zakelijke OV reizen in Nederland. Maak je voor je zakelijke reis aanvullende kosten (bijvoorbeeld 1e klasse, Intercity Direct, OV fiets of OV taxi) geef in 'Mijn NS Zakelijk' dan aan die reis het kenmerk 'Zakelijk' mee en vermeld de reden van de reis.\n\nOV-vrij reizen aanvragen:\n- Je vraagt je OV-vrij reizen kaart aan bij Forensz.\n- Via Forensz kun je jouw OV-vrij uitbreiden met een Intercity Direct abonnement. De extra kosten zijn volledig voor jouw rekening en verrekenen we niet voor eventuele zakelijke reizen.\n- De looptijd van het Ov-vrij reizen is steeds 1 jaar, tussentijds opzeggen is slechts zeer beperkt mogelijk.\n\nGebruiksvoorwaarden:\n- Je gebruikt OV-vrij reizen op tenminste de helft van je reisdagen voor woon-werkverkeer. Zakelijk en privégebruik in Nederland is toegestaan;\n- Je mag de kaart alleen zelf gebruiken;\n- Bij onjuist gebruik kunnen we je OV-vrij kaart innemen;\n- Meld diefstal, verlies of beschadiging van de kaart zo snel mogelijk maar in ieder geval binnen 24 uur aan bij Forensz (forensz@vccr.nl). Vanaf het tweede duplicaat betaal je de kosten voor vervanging zelf.\n\nBeëindigen van het OV-vrij abonnement:\n- Je kunt het OV-vrij reizen alleen voortijdig beëindigen als je verhuist, je standplaats wijzigt of in een aantal gevallen die je verder naar onderen vindt.\n- Ben je arbeidsongeschikt en verwacht je meer dan 8 weken aaneengesloten niet naar je werk te reizen? Laat Forensz dan je kaart stopzetten. Zodra je weer aan het werk gaat, vraag het OV vrij reizen opnieuw aan.\n- Reis je voor een aangesloten periode van minimaal 8 weken niet naar je werk vanwege zwangerschaps- en bevallingsverlof, adoptieverlof, ouderschapsverlof of onbetaald verlof, dan is het nodig om Forensz je OV-vrij kaart tijdelijk te laten stopzetten.\n- Eindigt je dienstverband dan eindigt ook jouw recht op gebruik van het OV-vrij reizen. Neem voor je laatste werkdag contact op met Forensz en volg hun instructies.\n\n2. De OV-vrij kaart als onderdeel van het OV+ budget\n- Dit onderdeel geldt uitsluitend voor medewerkers met wie het OV+ budget in het arbeidscontract is overeengekomen en voor medewerkers die in plaats van een arbeidsvoorwaardelijke leaseauto (categorie B) hebben gekozen voor het OV+ budget.\n- Het OV+ budget is een OV-vrij kaart 2e klasse plus een maandelijks geldbedrag. Een 1e klasse upgrade is mogelijk tegen bijbetaling van €50,- per maand.",
+      "voorbeeldvragen": [
+        "Mag ik privé reizen met mijn OV-vrij kaart?",
+        "Hoe vraag ik OV-vrij aan?",
+        "Ik ben ziek, moet ik mijn OV-vrij stopzetten?",
+        "Kan ik mijn OV-vrij kaart opzeggen?",
+        "Hoeveel kost een upgrade naar eerste klas?",
+        "Ik ga met zwangerschapsverlof, wat moet ik doen met mijn OV-kaart?"
+      ]
+    },
+    {
+      "label_id": "ns_business_card",
+      "beschrijving": "NS Business Card voor zakelijke reizen en leaserijders: alleen zakelijk gebruik, 2e klas, aanvullende vervoersdiensten, declaratieregels",
+      "keywords": ["NS Business Card", "businesskaart", "zakelijke kaart", "zakelijk reizen", "treintaxi", "OV-fiets", "Zone taxi", "declareren", "reiskostenbudget", "leaserijder", "Mijn NS Zakelijk"],
+      "chunk": "3. De NS-business kaart en zakelijk reizen\n\nZakelijke reizen met OV:\n- Heb je geen OV-vrij, maar reis je voor je werk met het OV dan vergoeden we OV kosten op basis van 2e klasse.\n- Je reist met een door ons verstrekt OV vervoersbewijs, de NS Business Kaart.\n- Onder bijzondere omstandigheden kun je incidenteel 1e klasse reizen of niet met de kaart gemaakte OV kosten achteraf declareren, als je daarvoor een goede reden hebt én vooraf toestemming van je leidinggevende hebt gekregen.\n\nEen goede reden voor incidenteel 1e klasse reizen kan bijvoorbeeld zijn, dat je je tijdens een langere treinreis in stilte moet kunnen voorbereiden op jouw zakelijke afspraak. Korte reizen (van minder dan een half uur) vergoeden we sowieso niet op basis van 1e klasse.\n\nNS Business kaart gebruiksvoorwaarden:\n- Je mag de zakelijke kaart uitsluitend gebruiken voor zakelijke in Nederland met de trein, bus, tram en metro. Gebruik voor woon-werk en privéreizen is niet toegestaan.\n- De zakelijke kaart is een persoonlijk vervoersbewijs en mag je alleen zelf gebruiken en niet aan anderen uitlenen of door anderen laten gebruiken.\n- Gebruik je de zakelijke kaart op een onjuiste manier dan kunnen we besluiten om deze in te nemen.\n- Bij diefstal, verlies of beschadiging ben je verplicht dit zo snel mogelijk, maar in ieder geval binnen 24 uur in 'Mijn NS Zakelijk' aan te geven en aan Forensz te melden. We nemen éénmalig de kosten voor een duplicaat kaart voor onze rekening, vanaf het tweede duplicaat betaal je deze kosten zelf.\n\nKosten voor vervoer:\n- Kosten voor vervoer aanvullend op je zakelijke OV reis, zoals (trein)taxi of OV fiets, vergoeden we voor zover die kosten redelijk zijn. Je kunt aan je zakelijke kaart en aan je OV-vrij kaart OV Fiets en Zone taxi als aanvullende vervoersdiensten laten toevoegen. Het is dan niet nodig om die kosten achteraf te declareren.\n\n4. NS Business Card voor lease- of zakelijke rijders\n\nWe moedigen je aan om niet alleen met je leaseauto maar ook met het OV te reizen. Met de NS Business Card voor leaserijders reis je eenvoudig voor je woon-werk en/of je zakelijke verkeer met het OV in plaats van met de auto.\n- Je mag de kaart niet gebruiken voor privéreizen met OV.\n- In de trein reis je 2e klasse; onder bijzondere omstandigheden mag je incidenteel 1e klasse reizen. Is op jou leasecategorie B4 van toepassing dan reis je in de trein standaard 1e klasse. Intercity Direct (toeslag) is alleen bij zakelijke reizen toegestaan.\n\nZakelijk reizen vanaf thuisadres:\n- Ontvang je voor je woon-werkverkeer het woon-werk reiskostenbudget en gebruik je de zakelijke kaart regelmatig voor zakelijke reizen in plaats van je woon-werkverkeer, dan is je woon-werk reiskostenbudget te hoog. Het is in dat geval nodig om het aantal reisdagen voor je woon-werk reiskostenbudget aan te passen.\n- Declareer je jouw zakelijke OV kosten én ben je direct vanuit je huisadres naar je zakelijke bestemming gereisd, dan vergoeden we alleen de kosten voor je zakelijke OV reis voor zover deze hoger zijn dan je reiskostenbudget voor die dag.",
+      "voorbeeldvragen": [
+        "Mag ik eerste klas reizen met mijn NS Business Card?",
+        "Hoe declareer ik zakelijke OV kosten?",
+        "Kan ik OV-fiets toevoegen aan mijn kaart?",
+        "Ik heb een leaseauto, mag ik ook een OV-kaart?",
+        "Mag ik mijn zakelijke kaart gebruiken voor woon-werk?"
+      ]
+    },
+    {
+      "label_id": "kaart_kwijt",
+      "beschrijving": "Kaart verloren, gestolen of beschadigd: melden binnen 24 uur bij Forensz, duplicaatkosten, aansprakelijkheid",
+      "keywords": ["kwijt", "verloren", "gestolen", "diefstal", "beschadigd", "blokkeren", "duplicaat", "nieuwe kaart", "melden", "24 uur", "Forensz"],
+      "chunk": "Kaart kwijt, gestolen of beschadigd\n\nVoor OV-vrij kaart:\nMeld diefstal, verlies of beschadiging van de kaart zo snel mogelijk maar in ieder geval binnen 24 uur aan bij Forensz (forensz@vccr.nl). Vanaf het tweede duplicaat betaal je de kosten voor vervanging zelf. Je bent aansprakelijk voor aan de OV-vrij kaart gerelateerde schade die door jouw toedoen is ontstaan of doordat je verwijtbaar nalatig en onachtzaam met de OV-vrij kaart bent geweest.\n\nVoor NS Business Card (zakelijk):\nBij diefstal, verlies of beschadiging van de zakelijke kaart ben je verplicht dit zo snel mogelijk, maar in ieder geval binnen 24 uur in 'Mijn NS Zakelijk' aan te geven en aan Forensz te melden. Je zakelijke kaart wordt dan geblokkeerd en je ontvangt zo snel mogelijk een nieuwe kaart. We nemen éénmalig de kosten voor een duplicaat kaart voor onze rekening, vanaf het tweede duplicaat betaal je deze kosten zelf.\n\nVoor NS Business Card (leaserijders):\nBij diefstal, verlies of beschadiging van de kaart ben je verplicht dit zo snel mogelijk, maar in ieder geval binnen 24 uur in 'Mijn NS Zakelijk' aan te geven. Je kaart wordt dan geblokkeerd en je ontvangt zo snel mogelijk een nieuwe kaart.\n\nJe bent aansprakelijk voor aan de kaart gerelateerde schade die door jouw toedoen is ontstaan of doordat je verwijtbaar nalatig en onachtzaam met de kaart bent geweest.",
+      "voorbeeldvragen": [
+        "Ik ben mijn kaart kwijt, wat moet ik doen?",
+        "Mijn kaart is gestolen",
+        "Hoe krijg ik een nieuwe kaart?",
+        "Kost een vervangende kaart geld?",
+        "Waar meld ik een verloren kaart?"
+      ]
+    },
+    {
+      "label_id": "correctietarief_onjuist_gebruik",
+      "beschrijving": "Correctietarief bij vergeten in/uit te checken, onjuist gebruik, privéreis per ongeluk gemaakt, hoe corrigeren via Mijn NS Zakelijk",
+      "keywords": ["correctietarief", "vergeten", "uitchecken", "inchecken", "onjuist gebruik", "privéreis", "corrigeren", "Mijn NS Zakelijk", "ingehouden", "salaris"],
+      "chunk": "Correctietarief en onjuist gebruik\n\nWat verstaan we nog meer onder onjuist gebruik? Niet in- of uitchecken, je kaart door een ander laten gebruiken, maar ook te laat melden dat je de kaart bent kwijt geraakt en er in de tussentijd met de kaart is gereisd.\n\nHeb je per ongeluk een privéreis gemaakt met de NS Business Card? Log dan in op 'Mijn NS Zakelijk' en voeg aan de reis het kenmerk 'privé reis' toe. We houden de kosten van de reis in op jouw salaris.\n\nBen je vergeten uit te checken en heb je dit achteraf niet gecorrigeerd? Dan is het door de NS gefactureerde correctietarief voor vergeten uit te checken voor jouw rekening.\n\nAlle kosten, juist én onjuist gebruik van de kaart, worden aan ons gefactureerd. Het is daarom voor ons belangrijk om onjuist gebruik van de kaart te herkennen. We voeren regelmatig steekproeven en analyses uit om zicht te houden op het gebruik van de kaarten en kunnen we je ook vragen om het gebruik van de kaart toe te lichten.\n\nJe kunt ervoor kiezen om in je persoonlijke, online 'Mijn NS Zakelijk-omgeving' een kenmerk aan je OV reizen (bijvoorbeeld woon-werk) toe te voegen. Daarmee maak je het voor jezelf en ons makkelijker om (on)juist gebruik te herkennen.",
+      "voorbeeldvragen": [
+        "Wat is een correctietarief?",
+        "Ik ben vergeten uit te checken",
+        "Ik heb per ongeluk een privéreis gemaakt met mijn zakelijke kaart",
+        "Waarom is er geld ingehouden op mijn salaris?",
+        "Hoe corrigeer ik een reis in Mijn NS Zakelijk?"
+      ]
+    },
+    {
+      "label_id": "einde_dienstverband",
+      "beschrijving": "Wat te doen bij einde dienstverband: kaart inleveren, contact Forensz, kosten na afloop",
+      "keywords": ["uit dienst", "ontslag", "einde dienstverband", "opzeggen", "inleveren", "laatste werkdag", "stoppen"],
+      "chunk": "Einde dienstverband\n\nVoor OV-vrij kaart:\nEindigt je dienstverband dan eindigt ook jouw recht op gebruik van het OV-vrij reizen. Neem voor je laatste werkdag contact op met Forensz en volg hun instructies. Het is niet toegestaan om na afloop van je dienstverband nog met de OV-vrij kaart te reizen.\n\nVoor NS Business Card:\nGa je uit dienst, dan lever je de kaart zo snel mogelijk na je laatste werkdag in. Neem van tevoren contact op met Forensz en volg hun instructies. Reis je na afloop van je dienstverband nog met de kaart dan zijn die kosten voor jouw rekening.",
+      "voorbeeldvragen": [
+        "Ik ga uit dienst, wat moet ik doen met mijn kaart?",
+        "Wanneer moet ik mijn kaart inleveren?",
+        "Mag ik na mijn laatste werkdag nog reizen?"
+      ]
+    }
+  ]
+}

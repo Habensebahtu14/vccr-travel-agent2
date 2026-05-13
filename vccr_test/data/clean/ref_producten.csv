@@ -1,0 +1,12 @@
+Productcode,Productnaam,Omschrijiving
+1210,Traject Vrij abonnement,Zie werkblad Abonnementen
+1211,Traject op Maat abonnement,Zie werkblad Abonnementen
+1250,"Bus, Tram, Metro Vrij *",<< Betekenis wordt nagevraagd bij NS >>
+1270,BudgetZeker BTM,"Dit zijn aanvullende abonnementen op een treinabonnement waarbij je het gebruik van bus, tram en metro afkoopt voor een vast bedrag per maand. Afhankelijk hoe vaak he reist en de reisafstanden is dat Small, Medium of Large. Deze aanvullende abonnementen verdwijnen per 1 december 2025"
+1280,NS-Business Collectief Trein,Gereisd met de trein met een Collectief Trein abonnement
+2000,Treinreizen,Gereisd met de trein
+3000,IC direct toeslagen,Gereisd met Intercity Direct en hiervoor een toeslag betaald
+4000,"Bus, Tram en Metroreizen","Gereisd met bus, tram of metro"
+5030,Deelfiets,Gebruik van een deelfiets zoals OV-fiets of Dott e-bike
+9000,Correctietarieven Treinen,Vergeten in of uit te checken in trein
+9600,"Correctietarieven Bus, Tram en Metro","Vergeten in of uit te checken in bus, tram of metro"

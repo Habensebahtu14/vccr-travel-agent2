@@ -1,0 +1,10 @@
+Motief,Omschrijving
+WW,Woon-werkreis
+Z,Zakelijke reis
+P,Privéreis
+O,Onbekende reis
+C,"Correctietarief (soort van boete als gevolg van vergeten in of uit te checken, geen geldig vervoerbewijs, etc.)"
+CC,"Credit op correctietarief (bij vergeten in of uit te checken kun je bellen met NS om dit te laten herstellen, correctietarief minus reiskosten worden dan gecrediteerd bij eerstvolgende facturatie"
+WWABO,Woon-werkabonnement (kosten worden maandelijks achteraf in rekening gebracht)
+WWCABO,Credit op woon-werkabonnement (bij vroegtijdig stopzetten kan een deel van de abonnementskosten worden gecrediteerd)
+BTWV,BTW-verschil als gevolg van afronden reiskosten
