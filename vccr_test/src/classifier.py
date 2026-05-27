@@ -1,16 +1,48 @@
 import sqlite3
 from pathlib import Path
-from anthropic import Anthropic
 from dotenv import load_dotenv
-from pathlib import Path
+import os
+from openai import AzureOpenAI
+import requests
+import json
 
+# 1. Laad eerst het .env bestand in
 load_dotenv(Path(__file__).parent.parent / ".env")
 
+# 2. Haal daarna pas alle variabelen op (inclusief de API key!)
+AZURE_OPENAI_API_KEY = os.environ.get("AZURE_OPENAI_API_KEY")
+AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT")
+AZURE_OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
+AZURE_OPENAI_DEPLOYMENT = os.environ.get("AZURE_OPENAI_DEPLOYMENT", "gpt-4.1-mini")
+
 # --- Configuratie ---
-MODEL = "claude-sonnet-4-20250514"
 DB_PATH = str(Path(__file__).parent.parent / "data" / "agent.db")
- 
-client = Anthropic()
+
+# 3. Maak de client aan
+azure_client = AzureOpenAI(
+    api_key=AZURE_OPENAI_API_KEY,
+    api_version=AZURE_OPENAI_API_VERSION,
+    azure_endpoint=AZURE_OPENAI_ENDPOINT
+)
+
+
+def _chat_completion_client(messages, max_tokens=100, temperature=0):
+    try:
+        resp = azure_client.chat.completions.create(
+            model=AZURE_OPENAI_DEPLOYMENT,
+            messages=messages,
+            max_tokens=max_tokens,
+            temperature=temperature,
+        )
+        try:
+            return resp.choices[0].message.content
+        except Exception:
+            try:
+                return resp.choices[0].message["content"]
+            except Exception:
+                return str(resp)
+    except Exception as e:
+        return f"FOUT_LLM: {e}"
 
 
 def get_label_beschrijvingen(groep: str = "voorbeeld") -> str:
@@ -88,18 +120,8 @@ def classificeer_vraag(vraag: str, groep: str = "voorbeeld") -> list[str]:
     """
     system_prompt = build_classifier_prompt(groep)
 
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=100,
-        temperature=0,
-        system=system_prompt,
-        messages=[
-            {"role": "user", "content": vraag}
-        ],
-    )
-
-    # Parse het antwoord
-    antwoord = response.content[0].text.strip()
+    messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": vraag}]
+    antwoord = _chat_completion_client(messages, max_tokens=100, temperature=0).strip()
     labels = [label.strip() for label in antwoord.split(",")]
 
     return labels
