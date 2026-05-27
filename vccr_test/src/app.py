@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import streamlit as st
 import sqlite3
 import pandas as pd
@@ -8,6 +9,10 @@ from system_prompt import SYSTEM_PROMPT
 import requests
 import json
 from datetime import datetime, timezone, timedelta
+import gzip
+import io
+from lxml import etree
+import re
 
 # ── Config ─────────────────────────────────────────────────────────────
 DB_PATH = str(Path(__file__).parent.parent / "data" / "agent.db")
@@ -107,13 +112,19 @@ def bepaal_vraagtype(vraag):
             Bepaal of de vraag van de werknemer gaat over:
             - DATA: persoonlijke reisgegevens, gemaakte kosten, eerdere trajecten (→ database query nodig)
             - BELEID: regels, procedures, rechten, vergoedingen (→ beleidsdocument nodig)
-            - ADVIES: toekomstig reisadvies, routeplanning, actuele treintijden (van A naar B) (→ API nodig)
+            - OV-ADVIES: toekomstig reisadvies, routeplanning, actuele treintijden (van A naar B) (→ NS API)
+            - WEG-ADVIES: actuele verkeerssituatie, files, incidenten op de weg (→ NDW API)
             - BEIDE: combinatie van persoonlijke data én beleidsregels
 
-            Antwoord met ALLEEN één woord: DATA, BELEID, ADVIES of COMBINATIE"""
+            Antwoord met ALLEEN één woord: DATA, BELEID, OV-ADVIES, WEG-ADVIES of COMBINATIE"""
     messages = [{"role": "system", "content": sys_prompt}, {"role": "user", "content": vraag}]
     response = _chat_completion(messages, max_tokens=50, temperature=0)
-    return response.strip().lower()
+    vraagtype = response.strip().lower()
+    if vraagtype == "advies":
+        vraagtype = "ov-advies"
+    if vraagtype == "combinatie":
+        vraagtype = "beide"
+    return vraagtype
 
 def beantwoord_reisadvies_vraag(vraag):
     # 1. Bepaal de huidige tijd in Nederland
@@ -202,6 +213,82 @@ def beantwoord_reisadvies_vraag(vraag):
     messages_format = [{"role": "system", "content": "Je vertaalt JSON naar leesbare tekst."}, {"role": "user", "content": format_prompt}]
     return _chat_completion(messages_format, max_tokens=600, temperature=0.3)
 
+def verkeers_data(road_filter: str = None) -> list[dict]:
+    """Haalt actuele verkeersdata op van NDW."""
+    url = "https://opendata.ndw.nu/traveltime.xml.gz"
+    try:
+        response = requests.get(url, timeout=15)
+        if response.status_code != 200 or not response.content:
+            return []
+
+        with gzip.open(io.BytesIO(response.content), 'rb') as f:
+            tree = etree.parse(f)
+    except (requests.RequestException, gzip.BadGzipFile, etree.XMLSyntaxError, OSError):
+        return []
+
+    root = tree.getroot()
+    ns = {'d': 'http://datex2.eu/schema/2/2_0'}
+
+    results = []
+    for situation in root.findall('.//d:elaboratedData', ns):
+        road = situation.findtext('.//d:roadNumber', namespaces=ns, default='')
+        direction = situation.findtext('.//d:directionBound', namespaces=ns, default='')
+        travel_time = situation.findtext('.//d:travelTime', namespaces=ns)
+        free_flow = situation.findtext('.//d:freeFlowTravelTime', namespaces=ns)
+
+        if road_filter and road_filter.upper() not in road.upper():
+            continue
+
+        if travel_time and free_flow:
+            delay = float(travel_time) - float(free_flow)
+            results.append({
+                "road": road,
+                "direction": direction,
+                "travel_time_min": round(float(travel_time) / 60, 1),
+                "delay_min": round(delay / 60, 1)
+            })
+
+    return results[:10]
+
+def weg_ongelukken(road_filter: str = None) -> list[dict]:
+    """Haalt actuele incidenten/files op van NDW."""
+    url = "https://opendata.ndw.nu/actueel_beeld.xml.gz"
+    try:
+        response = requests.get(url, timeout=15)
+        if response.status_code != 200 or not response.content:
+            return []
+
+        with gzip.open(io.BytesIO(response.content), 'rb') as f:
+            tree = etree.parse(f)
+    except (requests.RequestException, gzip.BadGzipFile, etree.XMLSyntaxError, OSError):
+        return []
+
+    root = tree.getroot()
+    ns = {'d': 'http://datex2.eu/schema/2/2_0'}
+
+    incidents = []
+    for situation in root.findall('.//d:situation', ns):
+        road = situation.findtext('.//d:roadNumber', namespaces=ns, default='')
+        desc = situation.findtext('.//d:comment', namespaces=ns, default='')
+        situation_type = situation.findtext('.//d:situationRecordType', namespaces=ns, default='')
+
+        if road_filter and road_filter.upper() not in road.upper():
+            continue
+
+        incidents.append({
+            "road": road,
+            "type": situation_type,
+            "description": desc
+        })
+
+    return incidents[:10]
+
+def extraheer_wegnummer(vraag: str) -> str | None:
+    """Haalt het wegnummer uit een vraag, bijv. 'A13', 'N14', 'E19'."""
+    match = re.search(r'\b([ARNE]\d+)\b', vraag.upper())
+    
+    return match.group(1) if match else None
+
 def beantwoord_beleidsvraag(vraag, groep):
     """Beantwoordt een beleidsvraag via classify-then-retrieve (Functie 2)."""
     labels = classificeer_vraag(vraag, groep)
@@ -229,7 +316,28 @@ def stel_vraag(vraag, pers_nummer, groep):
         antwoord = beantwoord_beleidsvraag(vraag, groep)
     elif vraagtype == "data":
         antwoord = beantwoord_datavraag(vraag, pers_nummer, groep)
-    elif vraagtype == "advies":
+    elif vraagtype == "weg-advies":
+        wegnummer = extraheer_wegnummer(vraag)
+        verkeers = verkeers_data(vraag)
+        ongelukken = weg_ongelukken(vraag)
+        antwoord_parts = []
+        if verkeers:
+            verkeers_samenvatting = "\n".join([
+                f"- Weg {item['road']} {item['direction']}: reistijd {item['travel_time_min']} min, vertraging {item['delay_min']} min"
+                for item in verkeers
+            ])
+            antwoord_parts.append("Actuele verkeerssituatie:\n" + verkeers_samenvatting)
+        if ongelukken:
+            ongelukken_samenvatting = "\n".join([
+                f"- Weg {item['road']}: {item['description']} ({item['type']})"
+                for item in ongelukken
+            ])
+            antwoord_parts.append("Actuele incidenten:\n" + ongelukken_samenvatting)
+        if not antwoord_parts:
+            antwoord = "Sorry, ik kon geen actuele verkeersinformatie ophalen. Probeer het later nog eens."
+        else:
+            antwoord = "\n\n".join(antwoord_parts)
+    elif vraagtype == "ov-advies":
         antwoord = beantwoord_reisadvies_vraag(vraag)
     elif vraagtype == "beide":
         data_antwoord = beantwoord_datavraag(vraag, pers_nummer, groep)
@@ -246,10 +354,10 @@ def stel_vraag(vraag, pers_nummer, groep):
     return antwoord, vraagtype
 
 # ── Streamlit Interface ────────────────────────────────────────────────
-st.set_page_config(page_title="Forensz Reisassistent", page_icon="🚆", layout="wide")
+st.set_page_config(page_title="Forensz Reisassistent", layout="wide")
 
-st.title("🚆 Forensz Reisassistent")
-st.caption("AI-agent voor persoonlijk OV-reisadvies")
+st.title("Forensz Reisassistent")
+st.caption("AI-agent voor persoonlijk reisadvies")
 
 # ── Sidebar: Login ────────────────────────────────────────────────────
 with st.sidebar:
@@ -289,7 +397,6 @@ with st.sidebar:
     - Wat was mijn duurste reis?
     - Hoeveel privéreizen heb ik gemaakt?
     """)
-
     st.caption("📋 Beleidsvragen (Document):")
     st.markdown("""
     - Ik ben mijn kaart kwijt, wat nu?
@@ -308,6 +415,13 @@ with st.sidebar:
     - Kan ik vandaag met de trein van Leiden naar Haarlem reizen?
     - Wat is het vertrekspoor van de trein van Zwolle naar Amersfoort?
     """)
+    st.caption(" Verkeersdata (NDW data):")
+    st.markdown("""
+    - Hoe is de verkeerssituatie op de A12?
+    - Zijn er files op de A4 richting Amsterdam?
+    - Wat is de reistijd op de A2 richting Utrecht?
+    """)
+
 
 # ── Chat Interface ────────────────────────────────────────────────────
 
@@ -346,7 +460,8 @@ else:
     _TYPE_LABELS = {
         "data": "🗄️ Data-vraag (SQL)",
         "beleid": "📋 Beleidsvraag (Document)",
-        "advies": "🚆 Reisadvies (NS API)",
+        "ov-advies": "🚆 Reisadvies (NS API)",
+        "weg-advies": "🚗 Verkeersadvies (NDW)",
         "beide": "🔄 Gecombineerd",
     }
 
