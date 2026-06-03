@@ -21,6 +21,7 @@ AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
 AZURE_OPENAI_DEPLOYMENT = os.environ.get("AZURE_OPENAI_DEPLOYMENT", "gpt-4.1-mini")
 NS_API_KEY = os.environ.get("NS_API_KEY")
+GOOGLE_MAPS_API_KEY = ("AIzaSyCqk3PC6RBMQzR6rUtqHavWEOFxczZDsOA")
 
 # Client (will read credentials from environment if not passed)
 azure_client = AzureOpenAI(
@@ -106,25 +107,33 @@ def beantwoord_datavraag(vraag, pers_nummer, groep):
     else:
         return llm_antwoord
 
-
-def bepaal_vraagtype(vraag):
+def bepaal_vraagtype(vraag: str) -> str:
+    """Routeert de vraag naar het juiste type handler."""
     sys_prompt = """Je bent een router voor een mobiliteits-chatbot.
-            Bepaal of de vraag van de werknemer gaat over:
-            - DATA: persoonlijke reisgegevens, gemaakte kosten, eerdere trajecten (→ database query nodig)
-            - BELEID: regels, procedures, rechten, vergoedingen (→ beleidsdocument nodig)
-            - OV-ADVIES: toekomstig reisadvies, routeplanning, actuele treintijden (van A naar B) (→ NS API)
-            - WEG-ADVIES: actuele verkeerssituatie, files, incidenten op de weg (→ NDW API)
-            - BEIDE: combinatie van persoonlijke data én beleidsregels
-
-            Antwoord met ALLEEN één woord: DATA, BELEID, OV-ADVIES, WEG-ADVIES of COMBINATIE"""
-    messages = [{"role": "system", "content": sys_prompt}, {"role": "user", "content": vraag}]
+Bepaal of de vraag van de werknemer gaat over:
+- DATA: persoonlijke reisgegevens, gemaakte kosten, eerdere trajecten (→ database query nodig)
+- BELEID: regels, procedures, rechten, vergoedingen (→ beleidsdocument nodig)
+- OV-ADVIES: toekomstig reisadvies, routeplanning, actuele treintijden (van A naar B) (→ NS API)
+- WEG-ADVIES: actuele verkeerssituatie, files, incidenten op de weg (→ Google Maps API)
+- BEIDE: combinatie van persoonlijke data én beleidsregels
+ 
+Antwoord met ALLEEN één woord: DATA, BELEID, OV-ADVIES, WEG-ADVIES of BEIDE"""
+ 
+    messages = [
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": vraag}
+    ]
     response = _chat_completion(messages, max_tokens=50, temperature=0)
+ 
+    # Normaliseer: lowercase, strip witruimte, aliassen opvangen
     vraagtype = response.strip().lower()
-    if vraagtype == "advies":
-        vraagtype = "ov-advies"
-    if vraagtype == "combinatie":
-        vraagtype = "beide"
-    return vraagtype
+    aliassen = {
+        "advies":      "ov-advies",
+        "ov advies":   "ov-advies",
+        "weg advies":  "weg-advies",
+        "combinatie":  "beide",
+    }
+    return aliassen.get(vraagtype, vraagtype)
 
 
 def extract_road_number(vraag: str) -> str | None:
@@ -251,81 +260,172 @@ def beantwoord_reisadvies_vraag(vraag):
     messages_format = [{"role": "system", "content": "Je vertaalt JSON naar leesbare tekst."}, {"role": "user", "content": format_prompt}]
     return _chat_completion(messages_format, max_tokens=600, temperature=0.3)
 
-def verkeers_data(road_filter: str = None) -> list[dict]:
-    """Haalt actuele verkeersdata op van NDW."""
-    url = "https://opendata.ndw.nu/traveltime.xml.gz"
-    try:
-        response = requests.get(url, timeout=15)
-        if response.status_code != 200 or not response.content:
-            return []
-
-        with gzip.open(io.BytesIO(response.content), 'rb') as f:
-            tree = etree.parse(f)
-    except (requests.RequestException, gzip.BadGzipFile, etree.XMLSyntaxError, OSError):
-        return []
-
-    root = tree.getroot()
-    ns = {'d': 'http://datex2.eu/schema/2/2_0'}
-
-    results = []
-    for situation in root.findall('.//d:elaboratedData', ns):
-        road = situation.findtext('.//d:roadNumber', namespaces=ns, default='')
-        direction = situation.findtext('.//d:directionBound', namespaces=ns, default='')
-        travel_time = situation.findtext('.//d:travelTime', namespaces=ns)
-        free_flow = situation.findtext('.//d:freeFlowTravelTime', namespaces=ns)
-
-        if road_filter and road_filter.upper() not in road.upper():
-            continue
-
-        if travel_time and free_flow:
-            delay = float(travel_time) - float(free_flow)
-            results.append({
-                "road": road,
-                "direction": direction,
-                "travel_time_min": round(float(travel_time) / 60, 1),
-                "delay_min": round(delay / 60, 1)
-            })
-
-    return results[:10]
-
-def weg_ongelukken(road_filter: str = None) -> list[dict]:
-    """Haalt actuele incidenten/files op van NDW."""
-    url = "https://opendata.ndw.nu/actueel_beeld.xml.gz"
-    try:
-        response = requests.get(url, timeout=15)
-        if response.status_code != 200 or not response.content:
-            return []
-
-        with gzip.open(io.BytesIO(response.content), 'rb') as f:
-            tree = etree.parse(f)
-    except (requests.RequestException, gzip.BadGzipFile, etree.XMLSyntaxError, OSError):
-        return []
-
-    root = tree.getroot()
-    ns = {'d': 'http://datex2.eu/schema/2/2_0'}
-
-    incidents = []
-    for situation in root.findall('.//d:situation', ns):
-        road = situation.findtext('.//d:roadNumber', namespaces=ns, default='')
-        desc = situation.findtext('.//d:comment', namespaces=ns, default='')
-        situation_type = situation.findtext('.//d:situationRecordType', namespaces=ns, default='')
-
-        if road_filter and road_filter.upper() not in road.upper():
-            continue
-
-        incidents.append({
-            "road": road,
-            "type": situation_type,
-            "description": desc
-        })
-
-    return incidents[:10]
-
-def extraheer_wegnummer(vraag: str) -> str | None:
-    """Haalt het wegnummer uit een vraag, bijv. 'A13', 'N14', 'E19'."""
-    match = re.search(r'\b([ARNE]\d+)\b', vraag.upper())
+def beantwoord_verkeersadvies_vraag(vraag):
+    """Beantwoordt een verkeersvraag via Google Maps API."""
+    verkeerscontext = haal_verkeersinfo(vraag)
     
-    return match.group(1) if match else None
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "Je bent een Nederlandse verkeersassistent. "
+                "Beantwoord de vraag op basis van de actuele verkeersdata van Google Maps. "
+                "Wees beknopt en praktisch. Geef concrete adviezen over files, incidenten en reistijden."
+            ),
+        },
+        {
+            "role": "user",
+            "content": f"Actuele verkeersdata:\n{verkeerscontext}\n\nVraag: {vraag}",
+        },
+    ]
+    return _chat_completion(messages, max_tokens=600, temperature=0)
+
+
+def haal_verkeersinfo(vraag):
+    """Haalt actuele verkeersinformatie op via Google Maps API."""
+    
+    if not GOOGLE_MAPS_API_KEY:
+        return f"❌ **GOOGLE_MAPS_API_KEY ONTBREEKT**\n\nDe omgevingsvariabele GOOGLE_MAPS_API_KEY is niet ingesteld. Voer dit uit in de terminal:\n```\nexport GOOGLE_MAPS_API_KEY=\"your_actual_google_maps_api_key\"\n```"
+    
+    # Stap 1: Probeer het vertrekpunt en bestemming uit de vraag te extraheren
+    locatie_prompt = """Je bent een locatie-extractor. Haal het vertrekpunt en bestemming uit de verkeers/routevraag.
+    
+    Mogelijke outputs:
+    - "FROM: Amsterdam TO: Rotterdam" (als je duidelijke locaties herkent)
+    - "LOCATION: A4" of "LOCATION: Amsterdam centrum" (als het om een specifieke plaats/weg gaat)
+    - "NETHERLANDS" (als het om algemene verkeersinfo gaat)
+
+    Vraag: """ + vraag + """
+
+    Antwoord ALLEEN met één van de bovenstaande formats."""
+    
+    messages = [
+        {"role": "system", "content": "Je bent een Nederland-geografische expert."},
+        {"role": "user", "content": locatie_prompt}
+    ]
+    
+    locatie_bepaling = _chat_completion(messages, max_tokens=100, temperature=0).strip()
+    print(f"[DEBUG] Locatie bepaling: {locatie_bepaling}")
+    
+    # Stap 2: Bepaal origin en destination
+    origin = None
+    destination = None
+    
+    if "FROM:" in locatie_bepaling and "TO:" in locatie_bepaling:
+        try:
+            parts = locatie_bepaling.split("FROM:")[1].split("TO:")
+            origin = parts[0].strip()
+            destination = parts[1].strip()
+            print(f"[DEBUG] Extracteerde route: van {origin} naar {destination}")
+        except Exception as e:
+            print(f"[DEBUG] Fout bij route parsing: {e}")
+            origin = None
+            destination = None
+    elif "LOCATION:" in locatie_bepaling:
+        # Voor specifieke locaties gebruiken we Directions API rond die locatie
+        location = locatie_bepaling.split("LOCATION:")[1].strip()
+        # We gebruiken dezelfde locatie als origin en destination voor een 'round trip' analyse
+        origin = location
+        destination = location
+        print(f"[DEBUG] Gebruikte locatie: {location}")
+    
+    # Stap 3: Fallback: Amsterdam naar Rotterdam (standaard Nederlands drukke route)
+    if not origin or not destination:
+        print(f"[DEBUG] Geen specifieke route gevonden, gebruik standaard route Amsterdam-Rotterdam")
+        origin = "Amsterdam"
+        destination = "Rotterdam"
+    
+    url = "https://maps.googleapis.com/maps/api/directions/json"
+    
+    params = {
+        "origin": origin,
+        "destination": destination,
+        "key": GOOGLE_MAPS_API_KEY,
+        "departure_time": "now",
+        "traffic_model": "best_guess"
+    }
+    
+    try:
+        # DEBUG: Log wat we doen
+        print(f"[DEBUG] Google Maps API call: {origin} → {destination}")
+        print(f"[DEBUG] URL: {url}")
+        print(f"[DEBUG] Params: {params}")
+        
+        response = requests.get(url, params=params, timeout=10)
+        
+        print(f"[DEBUG] Response status code: {response.status_code}")
+        print(f"[DEBUG] Response text: {response.text[:500]}")  # Eerste 500 chars
+        
+        if response.status_code != 200:
+            error_msg = response.text if response.text else "Onbekende fout"
+            return f"❌ **Google Maps API Error (Code {response.status_code})**\n\nFout van Google Maps API:\n```\n{error_msg[:200]}\n```\n\n**Mogelijke oorzaken:**\n- GOOGLE_MAPS_API_KEY is ongeldig\n- De API key heeft onvoldoende rechten ingeschakeld\n- Rate limit bereikt\n\nCheck je API key en probeer het later opnieuw."
+        
+        data = response.json()
+        print(f"[DEBUG] Parsed JSON successful. Status: {data.get('status')}")
+        
+        if data.get('status') != 'OK':
+            error_msg = data.get('error_message', 'Onbekende fout')
+            return f"❌ **Google Maps Error**: {error_msg}"
+        
+        # Parse de respons en maak het leesbaar
+        verkeersinfo = f"📍 **Verkeersinfo voor route:** {origin} → {destination}\n\n"
+        
+        # Analyze routes
+        routes = data.get('routes', [])
+        if not routes:
+            return verkeersinfo + "❌ Geen route gevonden."
+        
+        for idx, route in enumerate(routes[:3], 1):  # Top 3 routes
+            legs = route.get('legs', [])
+            if not legs:
+                continue
+                
+            total_duration = 0
+            total_distance = 0
+            traffic_info = []
+            
+            for leg in legs:
+                # Get duration in traffic (if available)
+                duration_in_traffic = leg.get('duration_in_traffic', {})
+                if duration_in_traffic:
+                    duration_val = duration_in_traffic.get('value', 0) // 60  # Convert to minutes
+                    total_duration += duration_val
+                else:
+                    duration_val = leg.get('duration', {}).get('value', 0) // 60
+                    total_duration += duration_val
+                
+                distance_val = leg.get('distance', {}).get('value', 0) / 1000  # Convert to km
+                total_distance += distance_val
+                
+                steps = leg.get('steps', [])
+                for step in steps:
+                    step_duration = step.get('duration', {}).get('value', 0)
+                    if step_duration > 0:  # Alleen significante stappen
+                        instruction = step.get('html_instructions', '').replace('<b>', '').replace('</b>', '').replace('<div', '').replace('</div>', '')
+                        traffic_info.append(instruction)
+            
+            summary = route.get('summary', f'Route {idx}')
+            verkeersinfo += f"🛣️ **{summary}**\n"
+            verkeersinfo += f"  • ⏱️ Reistijd: **{total_duration} minuten**\n"
+            verkeersinfo += f"  • 📏 Afstand: **{total_distance:.1f} km**\n"
+            
+            if traffic_info:
+                verkeersinfo += f"  • 🚗 Routedetails:\n"
+                for info in traffic_info[:5]:  # Top 5 details
+                    verkeersinfo += f"    - {info}\n"
+            
+            verkeersinfo += "\n"
+        
+        return verkeersinfo
+        
+    except requests.exceptions.Timeout:
+        return "❌ **Timeout**: Google Maps API antwoordt niet. Probeer het later opnieuw."
+    except requests.exceptions.ConnectionError:
+        return "❌ **Verbindingsfout**: Kan Google Maps API niet bereiken. Check je internetverbinding."
+    except json.JSONDecodeError as e:
+        return f"❌ **JSON Parse Error**: De API gaf een ongeldig antwoord.\n\nFout: {str(e)}"
+    except Exception as e:
+        return f"❌ **Onverwachte fout**: {str(e)}"
 
 def beantwoord_beleidsvraag(vraag, groep):
     """Beantwoordt een beleidsvraag via classify-then-retrieve (Functie 2)."""
@@ -346,49 +446,58 @@ def beantwoord_beleidsvraag(vraag, groep):
     messages = [{"role": "system", "content": system}, {"role": "user", "content": vraag}]
     return _chat_completion(messages, max_tokens=1000, temperature=0)
 
-def stel_vraag(vraag, pers_nummer, groep):
-    """Hoofdfunctie: routeert naar de juiste handler. Geeft (antwoord, vraagtype) terug."""
-    vraagtype = bepaal_vraagtype(vraag)
 
+
+def stel_vraag(vraag: str, pers_nummer: str, groep: str) -> tuple[str, str]:
+    """
+    Hoofdfunctie: routeert naar de juiste handler.
+ 
+    Returns:
+        (antwoord, vraagtype)
+    """
+    vraagtype = bepaal_vraagtype(vraag)
+ 
     if vraagtype == "beleid":
         antwoord = beantwoord_beleidsvraag(vraag, groep)
+ 
     elif vraagtype == "data":
         antwoord = beantwoord_datavraag(vraag, pers_nummer, groep)
+ 
     elif vraagtype == "weg-advies":
-        wegnummer = extraheer_wegnummer(vraag)
-        verkeers = verkeers_data(vraag)
-        ongelukken = weg_ongelukken(vraag)
-        antwoord_parts = []
-        if verkeers:
-            verkeers_samenvatting = "\n".join([
-                f"- Weg {item['road']} {item['direction']}: reistijd {item['travel_time_min']} min, vertraging {item['delay_min']} min"
-                for item in verkeers
-            ])
-            antwoord_parts.append("Actuele verkeerssituatie:\n" + verkeers_samenvatting)
-        if ongelukken:
-            ongelukken_samenvatting = "\n".join([
-                f"- Weg {item['road']}: {item['description']} ({item['type']})"
-                for item in ongelukken
-            ])
-            antwoord_parts.append("Actuele incidenten:\n" + ongelukken_samenvatting)
-        if not antwoord_parts:
-            antwoord = "Sorry, ik kon geen actuele verkeersinformatie ophalen. Probeer het later nog eens."
-        else:
-            antwoord = "\n\n".join(antwoord_parts)
+        antwoord = beantwoord_verkeersadvies_vraag(vraag)
+ 
     elif vraagtype == "ov-advies":
         antwoord = beantwoord_reisadvies_vraag(vraag)
+ 
     elif vraagtype == "beide":
-        data_antwoord = beantwoord_datavraag(vraag, pers_nummer, groep)
+        data_antwoord   = beantwoord_datavraag(vraag, pers_nummer, groep)
         beleid_antwoord = beantwoord_beleidsvraag(vraag, groep)
+ 
         messages = [
-            {"role": "system", "content": "Je bent een mobiliteitsadviseur. Combineer de onderstaande twee antwoorden tot één samenhangend antwoord in het Nederlands. Vermijd herhaling."},
-            {"role": "user", "content": f"Vraag: {vraag}\n\nReisdata-antwoord:\n{data_antwoord}\n\nBeleid-antwoord:\n{beleid_antwoord}"},
+            {
+                "role": "system",
+                "content": (
+                    "Je bent een mobiliteitsadviseur. "
+                    "Combineer de onderstaande twee antwoorden tot één samenhangend antwoord "
+                    "in het Nederlands. Vermijd herhaling."
+                ),
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Vraag: {vraag}\n\n"
+                    f"Reisdata-antwoord:\n{data_antwoord}\n\n"
+                    f"Beleid-antwoord:\n{beleid_antwoord}"
+                ),
+            },
         ]
         antwoord = _chat_completion(messages, max_tokens=1200, temperature=0)
+ 
     else:
-        antwoord = beantwoord_datavraag(vraag, pers_nummer, groep)
+        # Onbekend vraagtype → val terug op datavraag
+        antwoord  = beantwoord_datavraag(vraag, pers_nummer, groep)
         vraagtype = "data"
-
+ 
     return antwoord, vraagtype
 
 # ── Streamlit Interface ────────────────────────────────────────────────
