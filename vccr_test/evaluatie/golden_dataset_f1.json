@@ -1,0 +1,185 @@
+{
+  "beschrijving": "Golden dataset voor evaluatie van Functie 1 (Text-to-SQL) — Execution Accuracy — 20 complexe vragen",
+  "vragen": [
+    {
+      "id": 1,
+      "vraag": "Hoeveel heb ik in totaal uitgegeven en in welke reisklasse ben ik ingedeeld?",
+      "pers_nummer": "10040",
+      "groep": "B",
+      "gouden_sql": "SELECT ROUND(SUM(t.\"Prijs incl. BTW\"),2) as totaal, k.Klasse FROM transacties t JOIN kaarten k ON t.\"Pers.nummer\" = k.Personeelsnummer WHERE t.\"Pers.nummer\" = '10040' AND k.Status = 'Actief'",
+      "categorie": "join_klasse_kosten",
+      "toelichting": "Verwacht: (2047.65, 2.0). Test JOIN transacties x kaarten met Status-filter en aggregatie over twee tabellen."
+    },
+    {
+      "id": 2,
+      "vraag": "Hoeveel heb ik uitgegeven in juli 2024?",
+      "pers_nummer": "659001",
+      "groep": "A",
+      "gouden_sql": "SELECT ROUND(SUM(\"Prijs incl. BTW\"),2) as totaal FROM transacties WHERE \"Pers.nummer\" = '659001' AND strftime('%Y-%m', Datum) = '2024-07'",
+      "categorie": "datum_maand",
+      "toelichting": "Verwacht: (314.85,). Test strftime-filter op maand+jaar combinatie."
+    },
+    {
+      "id": 3,
+      "vraag": "In welke maand had ik de meeste transacties?",
+      "pers_nummer": "103557",
+      "groep": "A",
+      "gouden_sql": "SELECT strftime('%Y-%m', Datum) as maand, COUNT(*) as n FROM transacties WHERE \"Pers.nummer\" = '103557' GROUP BY maand ORDER BY n DESC LIMIT 1",
+      "categorie": "datum_vergelijking",
+      "toelichting": "Verwacht: ('2024-09', 28). Test GROUP BY op strftime-expressie met TOP-1 selectie."
+    },
+    {
+      "id": 4,
+      "vraag": "Hoeveel woon-werkreizen heb ik op dinsdag gemaakt?",
+      "pers_nummer": "103215",
+      "groep": "B",
+      "gouden_sql": "SELECT COUNT(*) as aantal FROM transacties WHERE \"Pers.nummer\" = '103215' AND Motief = 'WW' AND Dag = 'DI'",
+      "categorie": "meerdere_voorwaarden",
+      "toelichting": "Verwacht: (41,). Test WHERE met twee gelijktijdige condities op Motief en Dag."
+    },
+    {
+      "id": 5,
+      "vraag": "Wat is mijn gemiddelde ritprijs?",
+      "pers_nummer": "AIH011",
+      "groep": "C",
+      "gouden_sql": "SELECT ROUND(AVG(\"Prijs incl. BTW\"),2) as gemiddelde FROM transacties WHERE \"Pers.nummer\" = 'AIH011'",
+      "categorie": "gemiddelde",
+      "toelichting": "Verwacht: (14.57,). Test AVG-aggregatie met ROUND op 2 decimalen. Groep C: personeelsnummer is tekst."
+    },
+    {
+      "id": 6,
+      "vraag": "Welk percentage van mijn reizen is een woon-werkrit?",
+      "pers_nummer": "107650",
+      "groep": "A",
+      "gouden_sql": "SELECT ROUND(100.0 * SUM(CASE WHEN Motief = 'WW' THEN 1 ELSE 0 END) / COUNT(*), 2) as pct_ww FROM transacties WHERE \"Pers.nummer\" = '107650'",
+      "categorie": "percentage_verhouding",
+      "toelichting": "Verwacht: (95.65,). Test berekende verhouding via CASE WHEN binnen SUM."
+    },
+    {
+      "id": 7,
+      "vraag": "Hoeveel heb ik per vervoerscategorie uitgegeven?",
+      "pers_nummer": "AAD015",
+      "groep": "C",
+      "gouden_sql": "SELECT Categorie, ROUND(SUM(\"Prijs incl. BTW\"),2) as totaal FROM transacties WHERE \"Pers.nummer\" = 'AAD015' GROUP BY Categorie ORDER BY totaal DESC",
+      "categorie": "groepering_categorie",
+      "toelichting": "Verwacht: 2 rijen: [('Bus, Tram en Metroreizen', 327.73), ('Treinreizen', 59.74)]. Test GROUP BY op Categorie met SUM en sortering."
+    },
+    {
+      "id": 8,
+      "vraag": "Hoeveel kilometer legde ik af op mijn op-één-na langste rit?",
+      "pers_nummer": "10040",
+      "groep": "B",
+      "gouden_sql": "SELECT ROUND(\"Aantal Km\",2) as km FROM transacties WHERE \"Pers.nummer\" = '10040' AND \"Aantal Km\" IS NOT NULL ORDER BY \"Aantal Km\" DESC LIMIT 1 OFFSET 1",
+      "categorie": "tweede_hoogste",
+      "toelichting": "Verwacht: (105.64,). Test LIMIT 1 OFFSET 1 patroon om de tweede waarde te selecteren."
+    },
+    {
+      "id": 9,
+      "vraag": "Bij hoeveel van mijn ritten had ik geen dalkorting?",
+      "pers_nummer": "AEH030",
+      "groep": "C",
+      "gouden_sql": "SELECT COUNT(*) as aantal FROM transacties WHERE \"Pers.nummer\" = 'AEH030' AND \"Daluur-Reductie\" = 'Geen reductie'",
+      "categorie": "tijdsfilter_dal",
+      "toelichting": "Verwacht: (73,). Test filter op de kolom 'Daluur-Reductie' met kolomnaam met koppelteken."
+    },
+    {
+      "id": 10,
+      "vraag": "Hoe vaak ben ik vertrokken vanaf Rotterdam Centraal?",
+      "pers_nummer": "AIH011",
+      "groep": "C",
+      "gouden_sql": "SELECT COUNT(*) as aantal FROM transacties WHERE \"Pers.nummer\" = 'AIH011' AND \"Van station\" = 'Rotterdam Centraal'",
+      "categorie": "station_specifiek",
+      "toelichting": "Verwacht: (5,). Test exacte match op stationsnaam met kolomnaam met spatie."
+    },
+    {
+      "id": 11,
+      "vraag": "Op welke dag van de week reis ik het vaakst?",
+      "pers_nummer": "103557",
+      "groep": "A",
+      "gouden_sql": "SELECT Dag, COUNT(*) as n FROM transacties WHERE \"Pers.nummer\" = '103557' AND Dag IS NOT NULL GROUP BY Dag ORDER BY n DESC LIMIT 1",
+      "categorie": "dag_van_week",
+      "toelichting": "Verwacht: ('DI', 39). Test GROUP BY op de Dag-kolom met NULL-filter en TOP-1."
+    },
+    {
+      "id": 12,
+      "vraag": "Hoeveel heb ik in totaal aan privéreizen uitgegeven?",
+      "pers_nummer": "AAD015",
+      "groep": "C",
+      "gouden_sql": "SELECT ROUND(SUM(\"Prijs incl. BTW\"),2) as totaal FROM transacties WHERE \"Pers.nummer\" = 'AAD015' AND Motief = 'P'",
+      "categorie": "som_per_motief",
+      "toelichting": "Verwacht: (67.96,). Test SUM gefilterd op specifiek motief ('P' = Privé)."
+    },
+    {
+      "id": 13,
+      "vraag": "Hoeveel verschillende vertrekstations heb ik gebruikt?",
+      "pers_nummer": "103215",
+      "groep": "B",
+      "gouden_sql": "SELECT COUNT(DISTINCT \"Van station\") as uniek_aantal FROM transacties WHERE \"Pers.nummer\" = '103215' AND \"Van station\" IS NOT NULL",
+      "categorie": "count_distinct",
+      "toelichting": "Verwacht: (6,). Test COUNT(DISTINCT ...) gecombineerd met NULL-uitsluiting."
+    },
+    {
+      "id": 14,
+      "vraag": "Welke trajecten heb ik vaker dan 10 keer gereisd?",
+      "pers_nummer": "10040",
+      "groep": "B",
+      "gouden_sql": "SELECT \"Van station\", \"Naar station\", COUNT(*) as n FROM transacties WHERE \"Pers.nummer\" = '10040' AND \"Van station\" IS NOT NULL GROUP BY \"Van station\", \"Naar station\" HAVING n > 10 ORDER BY n DESC",
+      "categorie": "having_clause",
+      "toelichting": "Verwacht: 4 rijen: Elst-Amsterdam Zuid (47x), Amsterdam Zuid-Arnhem Centraal (25x), Amsterdam Zuid-Elst (23x), Arnhem Centraal-Elst (15x). Test HAVING-filter na GROUP BY."
+    },
+    {
+      "id": 15,
+      "vraag": "Wat is mijn goedkoopste en mijn duurste rit?",
+      "pers_nummer": "103215",
+      "groep": "B",
+      "gouden_sql": "SELECT ROUND(MIN(\"Prijs incl. BTW\"),2) as min_prijs, ROUND(MAX(\"Prijs incl. BTW\"),2) as max_prijs FROM transacties WHERE \"Pers.nummer\" = '103215'",
+      "categorie": "min_max_combinatie",
+      "toelichting": "Verwacht: (2.7, 9.8). Test MIN en MAX in één query met twee uitvoerkolommen."
+    },
+    {
+      "id": 16,
+      "vraag": "Hoeveel van mijn transacties hebben geen vertrekstation ingevuld?",
+      "pers_nummer": "107855",
+      "groep": "A",
+      "gouden_sql": "SELECT COUNT(*) as aantal FROM transacties WHERE \"Pers.nummer\" = '107855' AND \"Van station\" IS NULL",
+      "categorie": "null_handling",
+      "toelichting": "Verwacht: (39,). Test IS NULL-conditie op een kolom met spaties in de naam."
+    },
+    {
+      "id": 17,
+      "vraag": "Hoeveel van mijn ritten waren duurder dan mijn gemiddelde ritprijs?",
+      "pers_nummer": "AEH030",
+      "groep": "C",
+      "gouden_sql": "SELECT COUNT(*) as aantal FROM transacties WHERE \"Pers.nummer\" = 'AEH030' AND \"Prijs incl. BTW\" > (SELECT AVG(\"Prijs incl. BTW\") FROM transacties WHERE \"Pers.nummer\" = 'AEH030')",
+      "categorie": "subquery_boven_gemiddeld",
+      "toelichting": "Verwacht: (71,). Test correlated subquery: buitenste query vergelijkt prijs met AVG uit binnenste query op dezelfde persoon."
+    },
+    {
+      "id": 18,
+      "vraag": "Welk abonnement heb ik en hoeveel heb ik aan treinreizen uitgegeven?",
+      "pers_nummer": "10093",
+      "groep": "B",
+      "gouden_sql": "SELECT k.Abonnement, ROUND(SUM(t.\"Prijs incl. BTW\"),2) as trein_kosten FROM transacties t JOIN kaarten k ON t.\"Pers.nummer\" = k.Personeelsnummer WHERE t.\"Pers.nummer\" = '10093' AND t.Categorie = 'Treinreizen' AND k.Status = 'Actief' GROUP BY k.Abonnement",
+      "categorie": "abonnement_join",
+      "toelichting": "Verwacht: [('Geen abonnement', 1574.0)]. Test JOIN met Categorie-filter en GROUP BY op kaartkolom."
+    },
+    {
+      "id": 19,
+      "vraag": "Hoeveel heb ik uitgegeven in november 2024?",
+      "pers_nummer": "AIH011",
+      "groep": "C",
+      "gouden_sql": "SELECT ROUND(SUM(\"Prijs incl. BTW\"),2) as totaal FROM transacties WHERE \"Pers.nummer\" = 'AIH011' AND Datum BETWEEN '2024-11-01' AND '2024-11-30'",
+      "categorie": "between_datum",
+      "toelichting": "Verwacht: (521.5,). Test BETWEEN op de Datum-kolom met specifieke datumgrenzen."
+    },
+    {
+      "id": 20,
+      "vraag": "Wat zijn mijn drie meest gereden trajecten?",
+      "pers_nummer": "659001",
+      "groep": "A",
+      "gouden_sql": "SELECT \"Van station\", \"Naar station\", COUNT(*) as aantal FROM transacties WHERE \"Pers.nummer\" = '659001' AND \"Van station\" IS NOT NULL GROUP BY \"Van station\", \"Naar station\" ORDER BY aantal DESC LIMIT 3",
+      "categorie": "top_n",
+      "toelichting": "Verwacht: 3 rijen: Marconiplein-Schiedam Centrum (57x), Marconiplein-Kralingse Zoom (56x), Kralingse Zoom-Marconiplein (36x). Test LIMIT 3 waarbij meerdere rijen het verwachte resultaat vormen."
+    }
+  ]
+}

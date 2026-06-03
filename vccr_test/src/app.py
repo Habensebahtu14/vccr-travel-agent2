@@ -83,6 +83,22 @@ def beantwoord_datavraag(vraag, pers_nummer, groep):
         return llm_antwoord
 
 
+def genereer_sql(vraag, pers_nummer, groep):
+    """Genereert alleen de SQL-query voor een datavraag (voor evaluatie)."""
+    system = SYSTEM_PROMPT.format(pers_nummer=pers_nummer, groep=groep)
+    response = anthropic_client.messages.create(
+        model=MODEL,
+        max_tokens=1000,
+        temperature=0,
+        system=system,
+        messages=[{"role": "user", "content": vraag}],
+    )
+    llm_antwoord = response.content[0].text
+    if "```sql" in llm_antwoord:
+        return llm_antwoord.split("```sql")[1].split("```")[0].strip()
+    return None
+
+
 def bepaal_vraagtype(vraag):
     """Bepaalt of de vraag een data-vraag (SQL) of beleidsvraag (document) is."""
     response = anthropic_client.messages.create(
