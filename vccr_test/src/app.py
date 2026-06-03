@@ -1,5 +1,7 @@
 from pathlib import Path
 import re
+import gzip
+import io
 import streamlit as st
 import sqlite3
 import pandas as pd
@@ -9,10 +11,8 @@ from system_prompt import SYSTEM_PROMPT
 import requests
 import json
 from datetime import datetime, timezone, timedelta
-import gzip
-import io
 from lxml import etree
-import re
+from traffic_helper import get_traffic_info
 
 # ── Config ─────────────────────────────────────────────────────────────
 DB_PATH = str(Path(__file__).parent.parent / "data" / "agent.db")
@@ -126,7 +126,45 @@ def bepaal_vraagtype(vraag):
         vraagtype = "beide"
     return vraagtype
 
+
+def extract_road_number(vraag: str) -> str | None:
+    """Zoek een snelweg- of hoofdwegnummer in de vraag."""
+    match = re.search(r"\b([AaNn])\s?(\d{1,3})\b", vraag)
+    if not match:
+        return None
+    return f"{match.group(1).upper()}{match.group(2)}"
+
+
+def summarize_traffic_data(road_data: dict, road_number: str) -> str:
+    """Gebruik het LLM om een leesbaar antwoord te maken uit ANWB-verkeersdata."""
+    if road_data.get("error"):
+        return f"Fout bij ophalen: {road_data.get('details')}"
+    if road_data.get("message"):
+        return road_data["message"]
+
+    prompt = f"""Je bent een Nederlandse verkeersassistent.
+Je krijgt ANWB verkeersdata voor weg {road_number}.
+Geef een kort, duidelijk en begrijpelijk antwoord in het Nederlands over de actuele situatie op deze weg.
+Noem de belangrijkste incidenten, files en wegwerkzaamheden die op dit moment van invloed zijn.
+Als er geen incidenten zijn, zeg dan dat de weg momenteel geen meldingen heeft.
+Gebruik geen JSON of code in je antwoord.
+
+Data:
+{json.dumps(road_data, ensure_ascii=False)}"""
+
+    messages = [
+        {"role": "system", "content": "Je bent een behulpzame en beknopte verkeersassistent."},
+        {"role": "user", "content": prompt},
+    ]
+    return _chat_completion(messages, max_tokens=400, temperature=0.2)
+
+
 def beantwoord_reisadvies_vraag(vraag):
+    road_number = extract_road_number(vraag)
+    if road_number:
+        road_data = get_traffic_info(road_number)
+        return summarize_traffic_data(road_data, road_number)
+
     # 1. Bepaal de huidige tijd in Nederland
     nl_timezone = timezone(timedelta(hours=2))
     nu_nl = datetime.now(nl_timezone)
@@ -422,6 +460,22 @@ with st.sidebar:
     - Wat is de reistijd op de A2 richting Utrecht?
     """)
 
+
+    st.divider()
+    st.header("🚗 Wegverkeer (ANWB)")
+    st.caption("Haal actuele incidenten op voor een snelweg (bijv. A1)")
+    road_input = st.text_input("Wegnummer", value="")
+    if st.button("Haal verkeersinfo op"):
+        if road_input.strip():
+            with st.spinner("Ophalen..."):
+                road_data = get_traffic_info(road_input)
+                antwoord = summarize_traffic_data(road_data, extract_road_number(road_input) or road_input)
+            if isinstance(road_data, dict) and road_data.get("error"):
+                st.error(f"Fout bij ophalen: {road_data.get('details')}")
+            else:
+                st.markdown(antwoord)
+        else:
+            st.info("Voer een wegnummer in, bijvoorbeeld 'A1'.")
 
 # ── Chat Interface ────────────────────────────────────────────────────
 
