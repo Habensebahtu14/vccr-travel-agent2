@@ -6,7 +6,6 @@ from anthropic import Anthropic
 from system_prompt import SYSTEM_PROMPT
 
 # ── Config ─────────────────────────────────────────────────────────────
-# os.environ["ANTHROPIC_API_KEY"] = "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"
 DB_PATH = "../data/agent.db"
 MODEL = "claude-sonnet-4-20250514"
 anthropic_client = Anthropic()

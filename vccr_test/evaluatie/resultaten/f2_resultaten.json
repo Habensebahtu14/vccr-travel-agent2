@@ -1,0 +1,204 @@
+{
+  "totaal": 28,
+  "correct": 27,
+  "fout": 1,
+  "accuracy": 96.43,
+  "resultaten": [
+    {
+      "id": 1,
+      "vraag": "Welk maandelijks bedrag ontvang ik als ik in schaal H4 zit?",
+      "verwacht_label": "mobiliteitsbudget_overzicht",
+      "gekozen_label": "mobiliteitsbudget_overzicht",
+      "correct": true
+    },
+    {
+      "id": 2,
+      "vraag": "Wat is precies het verschil tussen het OV+ pakket en het elektrisch rijden-budget?",
+      "verwacht_label": "mobiliteitsbudget_overzicht",
+      "gekozen_label": "mobiliteitsbudget_overzicht",
+      "correct": true
+    },
+    {
+      "id": 3,
+      "vraag": "Hoe kan ik mijn woon-werkkilometers opgeven om belastingvrij vergoed te krijgen?",
+      "verwacht_label": "fiscale_ruimte",
+      "gekozen_label": "fiscale_ruimte",
+      "correct": true
+    },
+    {
+      "id": 4,
+      "vraag": "Waar registreer ik mijn zakelijke kilometers voor de maandelijkse uitbetaling?",
+      "verwacht_label": "fiscale_ruimte",
+      "gekozen_label": "fiscale_ruimte",
+      "correct": true
+    },
+    {
+      "id": 5,
+      "vraag": "Vanaf welke salarisschaal heb ik recht op een arbeidsvoorwaardelijke auto van de zaak?",
+      "verwacht_label": "leaseauto_arbeidsvoorwaardelijk",
+      "gekozen_label": "leaseauto_arbeidsvoorwaardelijk",
+      "correct": true
+    },
+    {
+      "id": 6,
+      "vraag": "Mijn leasecontract loopt binnenkort af, welke opties heb ik daarna?",
+      "verwacht_label": "leaseauto_arbeidsvoorwaardelijk",
+      "gekozen_label": "leaseauto_arbeidsvoorwaardelijk",
+      "correct": true
+    },
+    {
+      "id": 7,
+      "vraag": "Ik heb geen vaste auto maar moet soms naar een klant, hoe reserveer ik een gedeelde auto?",
+      "verwacht_label": "deelauto",
+      "gekozen_label": "deelauto",
+      "correct": true
+    },
+    {
+      "id": 8,
+      "vraag": "Welke gedragsregels gelden als ik een gedeelde auto van de zaak gebruik?",
+      "verwacht_label": "deelauto",
+      "gekozen_label": "deelauto",
+      "correct": true
+    },
+    {
+      "id": 9,
+      "vraag": "Ik rijd jaarlijks meer dan 15.000 kilometer voor mijn werk, kan ik een eigen leaseauto aanvragen?",
+      "verwacht_label": "zakelijke_leaseauto",
+      "gekozen_label": "zakelijke_leaseauto",
+      "correct": true
+    },
+    {
+      "id": 10,
+      "vraag": "Wat is het verschil tussen een categorie Z en een categorie Z+ leaseauto?",
+      "verwacht_label": "zakelijke_leaseauto",
+      "gekozen_label": "zakelijke_leaseauto",
+      "correct": true
+    },
+    {
+      "id": 11,
+      "vraag": "Welke gegevens moet ik bij elke rit met de bedrijfsbus noteren in mijn ritregistratie?",
+      "verwacht_label": "bedrijfswagen_rittenadministratie",
+      "gekozen_label": "bedrijfswagen_rittenadministratie",
+      "correct": true
+    },
+    {
+      "id": 12,
+      "vraag": "Telt het rijden met de bedrijfswagen tijdens mijn vakantiedag als zakelijk of als privé?",
+      "verwacht_label": "bedrijfswagen_rittenadministratie",
+      "gekozen_label": "bedrijfswagen_rittenadministratie",
+      "correct": true
+    },
+    {
+      "id": 13,
+      "vraag": "Hoe schakel ik in de deelauto het systeem om van privé naar zakelijk rijden?",
+      "verwacht_label": "track_and_trace",
+      "gekozen_label": "deelauto",
+      "correct": false
+    },
+    {
+      "id": 14,
+      "vraag": "Welke gegevens legt het voertuigvolgsysteem van On-Route vast per gereden rit?",
+      "verwacht_label": "track_and_trace",
+      "gekozen_label": "track_and_trace",
+      "correct": true
+    },
+    {
+      "id": 15,
+      "vraag": "Wat zijn de financiële gevolgen als ik ten onrechte verklaar de auto nooit privé te gebruiken?",
+      "verwacht_label": "controle_sancties",
+      "gekozen_label": "controle_sancties",
+      "correct": true
+    },
+    {
+      "id": 16,
+      "vraag": "Worden verkeersboetes die ik krijg in een bedrijfsauto op mijn salaris ingehouden?",
+      "verwacht_label": "controle_sancties",
+      "gekozen_label": "controle_sancties",
+      "correct": true
+    },
+    {
+      "id": 17,
+      "vraag": "Mag ik mijn OV-vrij reiskaart ook in het weekend voor privéreizen gebruiken?",
+      "verwacht_label": "ov_vrij_reizen",
+      "gekozen_label": "ov_vrij_reizen",
+      "correct": true
+    },
+    {
+      "id": 18,
+      "vraag": "Ik ga drie maanden met ouderschapsverlof, wat moet ik met mijn OV-abonnement regelen?",
+      "verwacht_label": "ov_vrij_reizen",
+      "gekozen_label": "ov_vrij_reizen",
+      "correct": true
+    },
+    {
+      "id": 19,
+      "vraag": "Ik heb een leaseauto maar wil ook met de trein kunnen reizen, kan ik een zakelijke OV-kaart krijgen?",
+      "verwacht_label": "ns_business_card",
+      "gekozen_label": "ns_business_card",
+      "correct": true
+    },
+    {
+      "id": 20,
+      "vraag": "In welke situatie mag ik eerste klas reizen met mijn NS Business Card?",
+      "verwacht_label": "ns_business_card",
+      "gekozen_label": "ns_business_card",
+      "correct": true
+    },
+    {
+      "id": 21,
+      "vraag": "Mijn reiskaart is gisteren gestolen, bij wie moet ik dit melden en hoe snel?",
+      "verwacht_label": "kaart_kwijt",
+      "gekozen_label": "kaart_kwijt",
+      "correct": true
+    },
+    {
+      "id": 22,
+      "vraag": "Als ik voor de derde keer een nieuwe kaart nodig heb, betaalt de werkgever dat dan nog?",
+      "verwacht_label": "kaart_kwijt",
+      "gekozen_label": "kaart_kwijt",
+      "correct": true
+    },
+    {
+      "id": 23,
+      "vraag": "Ik ben gisteren vergeten uit te checken bij het station, wat zijn de gevolgen daarvoor?",
+      "verwacht_label": "correctietarief_onjuist_gebruik",
+      "gekozen_label": "correctietarief_onjuist_gebruik",
+      "correct": true
+    },
+    {
+      "id": 24,
+      "vraag": "Ik heb per ongeluk een privérit gemaakt met mijn zakelijke NS-kaart, hoe herstel ik dit?",
+      "verwacht_label": "correctietarief_onjuist_gebruik",
+      "gekozen_label": "correctietarief_onjuist_gebruik",
+      "correct": true
+    },
+    {
+      "id": 25,
+      "vraag": "Mijn arbeidscontract eindigt volgende maand, wanneer en hoe moet ik mijn reiskaart inleveren?",
+      "verwacht_label": "einde_dienstverband",
+      "gekozen_label": "einde_dienstverband",
+      "correct": true
+    },
+    {
+      "id": 26,
+      "vraag": "Mag ik na mijn allerlaatste werkdag nog met de OV-vrij kaart naar huis reizen?",
+      "verwacht_label": "einde_dienstverband",
+      "gekozen_label": "einde_dienstverband",
+      "correct": true
+    },
+    {
+      "id": 27,
+      "vraag": "Wat is de hoofdstad van België?",
+      "verwacht_label": "GEEN_MATCH",
+      "gekozen_label": "GEEN_MATCH",
+      "correct": true
+    },
+    {
+      "id": 28,
+      "vraag": "Welk voetbalteam heeft het WK 2022 gewonnen?",
+      "verwacht_label": "GEEN_MATCH",
+      "gekozen_label": "GEEN_MATCH",
+      "correct": true
+    }
+  ]
+}
